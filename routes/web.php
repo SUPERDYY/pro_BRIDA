@@ -10,8 +10,10 @@ Route::get('/', [DashboardController::class, 'index']);
 
 //inovasi
 Route::get('/inovasi', [InovasiController::class, 'index']);
-Route::get('/inovasi_create', [InovasiController::class, 'create']);
-Route::post('/inovasi_create', [InovasiController::class, 'create_action']);
+Route::get('/inovasi', [InovasiController::class, 'create']);
+Route::post('/inovasi', [InovasiController::class, 'create_action']);
+Route::get('/inovasi/{id}/edit', [InovasiController::class, 'edit']);
+Route::post('/inovasi/{id}/edit', [InovasiController::class, 'edit_action']);
 Route::get('/inovasi/{id}/delete', [InovasiController::class, 'delete']);
 
 //pdf

@@ -20,7 +20,7 @@ class InovasiController extends Controller
     public function create()
     {
         $data['inovasis'] = Inovasi::all();
-        return view('admin.inovasi.inovasi_create', $data);
+        return view('admin.inovasi.inovasi', $data);
     }
 
     public function create_action(Request $request)
@@ -69,8 +69,8 @@ class InovasiController extends Controller
 
     public function edit($id)
     {
-        $data['detail'] = Inovasi::where('id', $id)->first();
-        return view('admin.inovasi.inovasi_edit', $data);
+        $data['inovasi'] = Inovasi::where('id', $id)->first();
+        return view('admin.inovasi.inovasi', $data);
     }
 
 
@@ -110,7 +110,7 @@ class InovasiController extends Controller
             'status' => $request->status,
         ];
 
-        inovasi::where('id', $id)->update($data);
+        Inovasi::where('id', $id)->update($data);
         return redirect('/inovasi')->with(['success' => 'berhasil mengedit Data Inovasi']);
     }
 
@@ -125,20 +125,19 @@ class InovasiController extends Controller
 
 
     public function generatePDF()
-{
-    // Ambil semua data inovasi dari database
-    $inovasis = Inovasi::all();
+    {
+        // Ambil semua data inovasi dari database
+        $inovasis = Inovasi::all();
 
-    // Cek apakah ada data, jika kosong kembalikan error
-    if ($inovasis->isEmpty()) {
-        return redirect()->back()->with('error', 'Tidak ada data inovasi tersedia.');
+        // Cek apakah ada data, jika kosong kembalikan error
+        if ($inovasis->isEmpty()) {
+            return redirect()->back()->with('error', 'Tidak ada data inovasi tersedia.');
+        }
+
+        // Generate PDF dengan semua data
+        $pdf = PDF::loadView('admin.pdf.inovasi_pdf', compact('inovasis'));
+
+        // Unduh PDF dengan nama file khusus
+        return $pdf->download("laporan-inovasi.pdf");
     }
-
-    // Generate PDF dengan semua data
-    $pdf = PDF::loadView('admin.pdf.inovasi_pdf', compact('inovasis'));
-
-    // Unduh PDF dengan nama file khusus
-    return $pdf->download("laporan-inovasi.pdf");
-}
-
 }
